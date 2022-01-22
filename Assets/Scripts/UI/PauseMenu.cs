@@ -25,6 +25,7 @@ namespace Platformer.UI
 
         public void BtnResumeClicked()
         {
+            Hide();
         }
 
         public void BtnMainMenuClicked()
