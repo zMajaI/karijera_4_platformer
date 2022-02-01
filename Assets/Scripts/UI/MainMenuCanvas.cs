@@ -26,7 +26,7 @@ namespace Platformer.UI
 
         private void OnDestroy()
         {
-            //e nes ga majci
+            //nesto trece
             inputUsername.onValueChanged.RemoveListener(OnUsernameInputChanged);
         }
 
