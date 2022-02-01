@@ -10,6 +10,7 @@ namespace Platformer.UI
     {
         [SerializeField] private TMP_InputField inputUsername;
         [SerializeField] private Button btnPlay;
+        [SerializeField] private TMP_Text lblSubtitle;
 
         private static MainMenuCanvas _instance;
         public static MainMenuCanvas Instance => _instance;
@@ -35,6 +36,7 @@ namespace Platformer.UI
         {
             GameDatabase.Instance.SetUsername(newName);
             btnPlay.interactable = !string.IsNullOrEmpty(GameDatabase.Instance.CurrentUser.Username);
+            lblSubtitle.text = "Najveci car je " + newName;
         }
 
         public void BtnPlayClicked()
