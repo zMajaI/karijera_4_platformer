@@ -26,7 +26,7 @@ namespace Platformer.UI
 
         private void OnDestroy()
         {
-            //majai: this is used to release listener for event
+            //majai: this is used to release listener for event, djoletov komentar
             inputUsername.onValueChanged.RemoveListener(OnUsernameInputChanged);
         }
 
