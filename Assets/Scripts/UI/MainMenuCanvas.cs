@@ -26,7 +26,7 @@ namespace Platformer.UI
 
         private void OnDestroy()
         {
-            //majai: this is used to release listener for event
+            //e nes ga majci
             inputUsername.onValueChanged.RemoveListener(OnUsernameInputChanged);
         }
 
