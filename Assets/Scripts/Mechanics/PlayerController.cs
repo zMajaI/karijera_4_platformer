@@ -128,6 +128,30 @@ namespace Platformer.Mechanics
 
             targetVelocity = move * maxSpeed;
         }
+        
+        #region Boosters
+
+        public void AddBooster(BoosterType boosterType)
+        {
+            switch (boosterType)
+            {
+                case BoosterType.SpeedUp:
+                    maxSpeed = GameSettings.Instance.SpeedUpBoosterMaxSpeed;
+                    break;
+            }
+        }
+        
+        public void RemoveBooster(BoosterType boosterType)
+        {
+            switch (boosterType)
+            {
+                case BoosterType.SpeedUp:
+                    maxSpeed = GameSettings.Instance.MaxSpeed;
+                    break;
+            }
+        }
+        
+        #endregion Boosters
 
         public enum JumpState
         {
@@ -137,5 +161,7 @@ namespace Platformer.Mechanics
             InFlight,
             Landed
         }
+
+      
     }
 }

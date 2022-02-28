@@ -14,8 +14,9 @@ namespace Platformer.UI
         [SerializeField] private TMP_Text lblTokens;
         [SerializeField] private TMP_Text lblEnemiesKilled;
         [SerializeField] private TMP_Text lblUsername;
-        #endregion Fields and Properties
+        [SerializeField] private RectTransform equippedBoosters;
         
+        #endregion Fields and Properties
         
         private static LevelCanvas _instance;
         public static LevelCanvas Instance => _instance;
@@ -26,15 +27,39 @@ namespace Platformer.UI
 
             PlayerDeath.OnExecute += PlayerDiedCallback;
             PlayerEnteredVictoryZone.OnExecute += PlayerWonCallback;
+
+            GameDatabase.Instance.BoosterEquippedCallback += UpdateBoosters;
+            GameDatabase.Instance.BoosterExpiredCallback += UpdateBoosters;
             
             lblUsername.text = GameDatabase.Instance.CurrentUser.Username;
             GameDatabase.Instance.ResetScore();
+
+            UpdateBoosters();
+
+        }
+
+        private void UpdateBoosters()
+        {
+            for (int i = 0; i < equippedBoosters.childCount; i++)
+            {
+                Destroy(equippedBoosters.GetChild(0).gameObject);
+            }
+
+            foreach (var booster in GameDatabase.Instance.CurrentUser.equippedBoosters)
+            {
+                var boosterRenderer = Instantiate(Resources.Load<BoosterRenderer>("Prefabs/BoosterRenderer"),
+                    equippedBoosters, true);
+                boosterRenderer.Booster = booster;
+            }
         }
 
         private void OnDestroy()
         {
             PlayerDeath.OnExecute -= PlayerDiedCallback;
             PlayerEnteredVictoryZone.OnExecute -= PlayerWonCallback;
+            
+            GameDatabase.Instance.BoosterEquippedCallback -= UpdateBoosters;
+            GameDatabase.Instance.BoosterExpiredCallback -= UpdateBoosters;
         }
 
         private void Update()
