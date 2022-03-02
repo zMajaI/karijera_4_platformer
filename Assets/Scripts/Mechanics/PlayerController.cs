@@ -67,7 +67,7 @@ namespace Platformer.Mechanics
 
         protected override void Update()
         {
-            objekat = GameObject.Find("Player");
+            objekat = gameObject;
             if (controlEnabled)
             {
                 move.x = Input.GetAxis("Horizontal");
@@ -85,13 +85,7 @@ namespace Platformer.Mechanics
             }
             UpdateJumpState();
             base.Update();
-            //if (Input.GetKeyDown(KeyCode.V))
-            //{
-            //    GameObject cp = Instantiate(CheckP, model.player.transform.position, model.player.transform.rotation);
-           // }
-            //double tap method
-
-            
+      
             if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
             {
                 if(KeyCooler > 0 && KeyCounter == 1)
@@ -195,6 +189,31 @@ namespace Platformer.Mechanics
             targetVelocity = move * maxSpeed;
         }
 
+               
+        #region Boosters
+
+        public void AddBooster(BoosterType boosterType)
+        {
+            switch (boosterType)
+            {
+                case BoosterType.SpeedUp:
+                    maxSpeed = GameSettings.Instance.SpeedUpBoosterMaxSpeed;
+                    break;
+            }
+        }
+        
+        public void RemoveBooster(BoosterType boosterType)
+        {
+            switch (boosterType)
+            {
+                case BoosterType.SpeedUp:
+                    maxSpeed = GameSettings.Instance.MaxSpeed;
+                    break;
+            }
+        }
+        
+        #endregion Boosters
+        
         public enum JumpState
         {
             Grounded,
