@@ -15,13 +15,12 @@ namespace Platformer.Gameplay
     {
         public EnemyController enemy;
         public PlayerController player;
-
         PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
         public override void Execute()
         {
             var willHurtEnemy = player.Bounds.center.y >= enemy.Bounds.max.y;
-
+            if (player.dashing) willHurtEnemy = true;
             if (willHurtEnemy)
             {
                 var enemyHealth = enemy.GetComponent<Health>();
@@ -30,8 +29,7 @@ namespace Platformer.Gameplay
                     enemyHealth.Decrement();
                     if (!enemyHealth.IsAlive)
                     {
-                        Schedule<EnemyDeath>().enemy = enemy;
-                        player.Bounce(2);
+                        Schedule<EnemyDeath>().enemy = enemy;// kopija samo onog dole, mozda je bounce visak...
                     }
                     else
                     {

@@ -5,7 +5,6 @@ using Platformer.Gameplay;
 using static Platformer.Core.Simulation;
 using Platformer.Model;
 using Platformer.Core;
-
 namespace Platformer.Mechanics
 {
     /// <summary>
@@ -26,13 +25,28 @@ namespace Platformer.Mechanics
         /// Initial jump velocity at the start of a jump.
         /// </summary>
         public float jumpTakeOffSpeed = 7;
-
+        //checkpoint sranje
+        public GameObject CheckP;
+        //dash sranje
+        public float dash_speed = 10f;
+        public float dash_len = 0.3f, dash_cd = 2f;
+        private float dash_counter;
+        private float dash_cool_counter;
+        public bool dashing = false;
         public JumpState jumpState = JumpState.Grounded;
         private bool stopJump;
-        /*internal new*/ public Collider2D collider2d;
-        /*internal new*/ public AudioSource audioSource;
+        //player scaling
+        GameObject objekat;
+
+        /*internal new*/
+        public Collider2D collider2d;
+        /*internal new*/
+        public AudioSource audioSource;
         public Health health;
         public bool controlEnabled = true;
+        //double tap method
+        float KeyCooler = 0.5f;
+        int KeyCounter = 0;
 
         bool jump;
         Vector2 move;
@@ -53,6 +67,7 @@ namespace Platformer.Mechanics
 
         protected override void Update()
         {
+            objekat = GameObject.Find("Player");
             if (controlEnabled)
             {
                 move.x = Input.GetAxis("Horizontal");
@@ -70,6 +85,57 @@ namespace Platformer.Mechanics
             }
             UpdateJumpState();
             base.Update();
+            //if (Input.GetKeyDown(KeyCode.V))
+            //{
+            //    GameObject cp = Instantiate(CheckP, model.player.transform.position, model.player.transform.rotation);
+           // }
+            //double tap method
+
+            
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                if(KeyCooler > 0 && KeyCounter == 1)
+                {
+                    if (dash_cool_counter <= 0)
+                    {
+                        if (dash_counter <= 0)
+                        {
+                            objekat.transform.localScale = new Vector3(0.7f,0.7f,0.7f);
+                            maxSpeed = dash_speed;
+                            dashing = true;
+                            dash_counter = dash_len;
+                        }
+                    }
+                }
+                else
+                {
+                    KeyCooler = 0.5f;
+                    KeyCounter += 1;
+                }
+            }
+            if(KeyCooler > 0)
+            {
+                KeyCooler -= 1 * Time.deltaTime;
+            }
+            else
+            {
+                KeyCounter = 0;
+            }
+            if (dash_counter > 0)
+            {
+                dash_counter -= Time.deltaTime;
+                if (dash_counter <= 0)
+                {
+                    maxSpeed = 3;
+                    dashing = false;
+                    dash_cool_counter = dash_cd;
+                    objekat.transform.localScale = new Vector3(1f, 1f, 1f);
+                }
+            }
+            if (dash_cool_counter > 0)
+            {
+                dash_cool_counter -= Time.deltaTime;
+            }
         }
 
         void UpdateJumpState()
@@ -128,30 +194,6 @@ namespace Platformer.Mechanics
 
             targetVelocity = move * maxSpeed;
         }
-        
-        #region Boosters
-
-        public void AddBooster(BoosterType boosterType)
-        {
-            switch (boosterType)
-            {
-                case BoosterType.SpeedUp:
-                    maxSpeed = GameSettings.Instance.SpeedUpBoosterMaxSpeed;
-                    break;
-            }
-        }
-        
-        public void RemoveBooster(BoosterType boosterType)
-        {
-            switch (boosterType)
-            {
-                case BoosterType.SpeedUp:
-                    maxSpeed = GameSettings.Instance.MaxSpeed;
-                    break;
-            }
-        }
-        
-        #endregion Boosters
 
         public enum JumpState
         {
@@ -161,7 +203,5 @@ namespace Platformer.Mechanics
             InFlight,
             Landed
         }
-
-      
     }
 }
