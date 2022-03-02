@@ -44,8 +44,10 @@ namespace Platformer.Mechanics
 
     public enum BoosterType
     {
-        SpeedUp = 1, 
+        SpeedUp = 1,
         NewBooster,
-        djoletov_booster
+        djoletov_booster,
+        MojBuster , //2
+        treci // 3
     }
 }
