@@ -209,6 +209,8 @@ namespace Platformer.Mechanics
                 case BoosterType.SpeedUp:
                     maxSpeed = GameSettings.Instance.MaxSpeed;
                     break;
+                case BoosterType.MojBuster:
+                    break;
             }
         }
         
