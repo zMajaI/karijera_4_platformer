@@ -199,9 +199,6 @@ namespace Platformer.Mechanics
                 case BoosterType.SpeedUp:
                     maxSpeed = GameSettings.Instance.SpeedUpBoosterMaxSpeed;
                     break;
-                case BoosterType.djoletov_booster:
-                    maxSpeed = GameSettings.Instance.SpeedUpBoosterMaxSpeed;
-                    break;
             }
         }
         
@@ -211,11 +208,6 @@ namespace Platformer.Mechanics
             {
                 case BoosterType.SpeedUp:
                     maxSpeed = GameSettings.Instance.MaxSpeed;
-                    break;
-                case BoosterType.djoletov_booster:
-                    maxSpeed = GameSettings.Instance.MaxSpeed;
-                    break;
-                case BoosterType.MojBuster:
                     break;
             }
         }
