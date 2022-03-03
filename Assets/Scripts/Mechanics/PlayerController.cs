@@ -28,6 +28,7 @@ namespace Platformer.Mechanics
         //checkpoint sranje
         public GameObject CheckP;
         //dash sranje
+        public bool speedboost = false;
         public float dash_speed = 10f;
         public float dash_len = 0.3f, dash_cd = 2f;
         private float dash_counter;
@@ -35,6 +36,8 @@ namespace Platformer.Mechanics
         public bool dashing = false;
         public JumpState jumpState = JumpState.Grounded;
         private bool stopJump;
+        //invincibility stat
+        public bool invincible = false;
         //player scaling
         GameObject objekat;
 
@@ -95,7 +98,10 @@ namespace Platformer.Mechanics
                         if (dash_counter <= 0)
                         {
                             objekat.transform.localScale = new Vector3(0.7f,0.7f,0.7f);
-                            maxSpeed = dash_speed;
+                            if(speedboost)
+                                maxSpeed = dash_speed+4f;
+                            else
+                                maxSpeed = dash_speed;
                             dashing = true;
                             dash_counter = dash_len;
                         }
@@ -120,7 +126,10 @@ namespace Platformer.Mechanics
                 dash_counter -= Time.deltaTime;
                 if (dash_counter <= 0)
                 {
-                    maxSpeed = 3;
+                    if (!speedboost)
+                        maxSpeed = 3;
+                    else
+                        maxSpeed = 8;
                     dashing = false;
                     dash_cool_counter = dash_cd;
                     objekat.transform.localScale = new Vector3(1f, 1f, 1f);
@@ -198,6 +207,12 @@ namespace Platformer.Mechanics
             {
                 case BoosterType.SpeedUp:
                     maxSpeed = GameSettings.Instance.SpeedUpBoosterMaxSpeed;
+                    speedboost = true;
+                    break;
+                case BoosterType.Invincibility:
+                    invincible = true;
+                    var playerRenderer = gameObject.GetComponent<SpriteRenderer>();
+                    playerRenderer.color = Color.red;
                     break;
             }
         }
@@ -208,6 +223,12 @@ namespace Platformer.Mechanics
             {
                 case BoosterType.SpeedUp:
                     maxSpeed = GameSettings.Instance.MaxSpeed;
+                    speedboost = false; 
+                    break;
+                case BoosterType.Invincibility:
+                    invincible = false;
+                    var playerRenderer = gameObject.GetComponent<SpriteRenderer>();
+                    playerRenderer.color = new Color(0.1803922f, 0.8901961f, 0.9921569f);
                     break;
             }
         }

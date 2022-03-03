@@ -21,6 +21,7 @@ namespace Platformer.Gameplay
         {
             var willHurtEnemy = player.Bounds.center.y >= enemy.Bounds.max.y;
             if (player.dashing) willHurtEnemy = true;
+            if (player.invincible) willHurtEnemy = true;
             if (willHurtEnemy)
             {
                 var enemyHealth = enemy.GetComponent<Health>();
