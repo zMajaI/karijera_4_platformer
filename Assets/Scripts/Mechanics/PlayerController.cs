@@ -48,8 +48,9 @@ namespace Platformer.Mechanics
         public Health health;
         public bool controlEnabled = true;
         //double tap method
-        float KeyCooler = 0.5f;
+        public float KeyCooler = 0.5f;
         int KeyCounter = 0;
+        public bool bonusPoints = false;
 
         bool jump;
         Vector2 move;
@@ -91,7 +92,7 @@ namespace Platformer.Mechanics
       
             if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
             {
-                if(KeyCooler > 0 && KeyCounter == 1)
+                if(KeyCooler > 0.2 && KeyCounter == 1)
                 {
                     if (dash_cool_counter <= 0)
                     {
@@ -209,6 +210,9 @@ namespace Platformer.Mechanics
                     maxSpeed = GameSettings.Instance.SpeedUpBoosterMaxSpeed;
                     speedboost = true;
                     break;
+                case BoosterType.BonusPoints:
+                    bonusPoints = true;
+                    break;
                 case BoosterType.Invincibility:
                     invincible = true;
                     var playerRenderer = gameObject.GetComponent<SpriteRenderer>();
@@ -224,6 +228,9 @@ namespace Platformer.Mechanics
                 case BoosterType.SpeedUp:
                     maxSpeed = GameSettings.Instance.MaxSpeed;
                     speedboost = false; 
+                    break;
+                case BoosterType.BonusPoints:
+                    bonusPoints = false;
                     break;
                 case BoosterType.Invincibility:
                     invincible = false;
